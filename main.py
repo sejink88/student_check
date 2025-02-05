@@ -6,7 +6,7 @@ import os
 data_file = "students_points.csv"
 
 # 관리자 비밀번호
-ADMIN_PASSWORD = "admin123"
+ADMIN_PASSWORD = "daeje2025"
 
 # CSV 파일 로드 함수
 def load_data():
