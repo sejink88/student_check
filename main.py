@@ -30,7 +30,7 @@ def save_data(data):
 data = load_data()
 
 # 페이지 제목
-st.title("학생 상벌점 관리")
+st.title("세진코인")
 
 # 반 선택
 selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
@@ -48,13 +48,13 @@ col1, col2 = st.columns(2)
 
 if password == ADMIN_PASSWORD:
     with col1:
-        if st.button(f"{selected_student}에게 상점 부여"):
+        if st.button(f"{selected_student}에게 세진코인 부여"):
             data.at[student_index, "상벌점"] += 1
             record_list = eval(data.at[student_index, "기록"])
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            st.success(f"{selected_student}에게 상점이 부여되었습니다.")
+            st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
 
     with col2:
         if st.button(f"{selected_student}에게 벌점 부여"):
@@ -63,7 +63,7 @@ if password == ADMIN_PASSWORD:
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            st.error(f"{selected_student}에게 벌점이 부여되었습니다.")
+            st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
 else:
     st.warning("올바른 비밀번호를 입력해야 상벌점을 부여할 수 있습니다.")
 
