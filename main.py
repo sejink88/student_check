@@ -11,6 +11,7 @@ def load_data():
         return pd.read_csv(data_file)
     else:
         data = pd.DataFrame({
+            "반": ["1반", "1반", "2반", "2반"],
             "학생": ["학생 A", "학생 B", "학생 C", "학생 D"],
             "상벌점": [0, 0, 0, 0],
             "기록": ["[]", "[]", "[]", "[]"]
@@ -28,15 +29,13 @@ data = load_data()
 # 페이지 제목
 st.title("학생 상벌점 관리")
 
-# 학생 목록 표시
-st.subheader("학생 목록")
-st.dataframe(data)
+# 반 선택
+selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
+filtered_data = data[data["반"] == selected_class]
 
 # 학생 선택
-selected_student = st.selectbox("학생을 선택하세요:", data["학생"].tolist())
-
-# 선택한 학생의 현재 점수 가져오기
-student_index = data[data["학생"] == selected_student].index[0]
+selected_student = st.selectbox("학생을 선택하세요:", filtered_data["학생"].tolist())
+student_index = data[(data["반"] == selected_class) & (data["학생"] == selected_student)].index[0]
 
 # 상벌점 부여 기능
 col1, col2 = st.columns(2)
