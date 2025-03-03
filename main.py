@@ -24,25 +24,34 @@ class_students = {
 }
 
 def load_data():
+    """기존 데이터를 유지하면서 새로운 학생만 추가"""
     if os.path.exists(data_file):
+        # 기존 데이터 로드
         data = pd.read_csv(data_file)
     else:
+        # 파일이 없으면 빈 데이터프레임 생성
         data = pd.DataFrame(columns=["반", "학생", "세진코인", "기록"])
 
-    # 기존 데이터 학생 목록 확인
+    # 기존 데이터의 학생 목록 가져오기
     existing_students = set(zip(data["반"], data["학생"]))
+
+    # 새롭게 추가할 학생 리스트
     new_entries = []
-    
+
     for class_name, students in class_students.items():
         for student in students:
             if (class_name, student) not in existing_students:
+                # 새로운 학생은 세진코인 0, 기록을 빈 리스트로 추가
                 new_entries.append([class_name, student, 0, "[]"])
-    
+
+    # 새로운 학생만 추가
     if new_entries:
         new_data = pd.DataFrame(new_entries, columns=["반", "학생", "세진코인", "기록"])
         data = pd.concat([data, new_data], ignore_index=True)
-        save_data(data)  # 데이터 저장 한 번만 실행
-    
+
+        # 기존 데이터 유지하면서 새로운 데이터만 추가한 후 저장
+        save_data(data)
+
     return data
 
 def save_data(data):
