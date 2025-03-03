@@ -4,7 +4,7 @@ import os
 import json
 
 # 관리자 비밀번호 설정
-PASSWORD = "sejin2026"
+PASSWORD = "sejin2025"
 
 # CSV 파일 경로
 data_file = "students_points.csv"
@@ -51,7 +51,9 @@ def load_data():
     return data
 
 def save_data(data):
-    data.to_csv(data_file, index=False)
+    """데이터 변경 시만 CSV 저장"""
+    if not data.empty:
+        data.to_csv(data_file, index=False)
 
 # 데이터 로드
 data = load_data()
