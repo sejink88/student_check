@@ -45,13 +45,10 @@ def load_data():
         new_data = pd.DataFrame(new_entries, columns=["반", "학생", "세진코인", "기록"])
         data = pd.concat([data, new_data], ignore_index=True)
 
-        # 기존 데이터 유지하면서 새로운 데이터만 추가한 후 저장
-        save_data(data)
-
     return data
 
 def save_data(data):
-    """데이터 변경 시만 CSV 저장"""
+    """데이터 변경 시 즉시 CSV 저장"""
     if not data.empty:
         data.to_csv(data_file, index=False)
 
@@ -78,8 +75,9 @@ if password == PASSWORD:
             record_list = json.loads(data.at[student_index, "기록"])
             record_list.append(1)
             data.at[student_index, "기록"] = json.dumps(record_list)
-            save_data(data)
+            save_data(data)  # 즉시 저장
             st.success(f"{selected_student}에게 1코인 추가됨.")
+            st.experimental_rerun()
 
     with col2:
         if st.button(f"{selected_student}에게 세진코인 차감"):
@@ -88,8 +86,9 @@ if password == PASSWORD:
                 record_list = json.loads(data.at[student_index, "기록"])
                 record_list.append(-1)
                 data.at[student_index, "기록"] = json.dumps(record_list)
-                save_data(data)
+                save_data(data)  # 즉시 저장
                 st.error(f"{selected_student}에게 1코인 차감됨.")
+                st.experimental_rerun()
             else:
                 st.warning("세진코인이 부족합니다.")
     
