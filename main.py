@@ -14,7 +14,7 @@ def load_data():
         students_data = {
             "반": [],
             "학생": [],
-            "상벌점": [],
+            "세진코인": [],
             "기록": []
         }
 
@@ -65,7 +65,7 @@ filtered_data = data[data["반"] == selected_class]
 selected_student = st.selectbox("학생을 선택하세요:", filtered_data["학생"].tolist())
 student_index = data[(data["반"] == selected_class) & (data["학생"] == selected_student)].index[0]
 
-# 상벌점 부여 기능 (비밀번호 확인 추가)
+# 세진코인 부여 기능 (비밀번호 확인 추가)
 password = st.text_input("비밀번호를 입력하세요:", type="password")
 correct_password = "sejin2025"  # 비밀번호 설정
 
@@ -92,7 +92,7 @@ if password == correct_password:
 
     # 선택한 학생만 업데이트된 데이터 표시
     st.subheader(f"{selected_student}의 업데이트된 세진코인")
-    updated_student_data = data.loc[[student_index], ["반", "학생", "상벌점", "기록"]]
+    updated_student_data = data.loc[[student_index], ["반", "학생", "세진코인", "기록"]]
     st.dataframe(updated_student_data)
 else:
     st.warning("올바른 비밀번호를 입력하세요.")
