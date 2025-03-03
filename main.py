@@ -73,7 +73,7 @@ if password == correct_password:
     col1, col2 = st.columns(2)
 
     with col1:
-        if st.button(f"{selected_student}에게 상점 부여"):
+        if st.button(f"{selected_student}에게 세진코인 부여"):
             data.at[student_index, "상벌점"] += 1
             record_list = eval(data.at[student_index, "기록"])
             record_list.append(1)
@@ -82,7 +82,7 @@ if password == correct_password:
             st.success(f"{selected_student}에게 상점이 부여되었습니다.")
 
     with col2:
-        if st.button(f"{selected_student}에게 벌점 부여"):
+        if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "상벌점"] -= 1
             record_list = eval(data.at[student_index, "기록"])
             record_list.append(-1)
