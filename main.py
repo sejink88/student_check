@@ -8,7 +8,7 @@ from pathlib import Path
 # 환경 변수 로드 (비밀번호 보안 강화)
 env_path = Path(".env")
 load_dotenv(dotenv_path=env_path)
-PASSWORD = os.getenv("SEJINCOIN_PASSWORD", "rlagorhkd")  # 기본값 설정
+PASSWORD = os.getenv("SEJINCOIN_PASSWORD", "sejin2025")  # 기본값 설정
 
 # CSV 파일 경로
 data_file = "students_points.csv"
