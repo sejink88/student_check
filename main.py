@@ -55,7 +55,7 @@ def save_data(data):
 data = load_data()
 
 # 페이지 제목
-st.title("학생 상벌점 관리")
+st.title("세진코인")
 
 # 반 선택
 selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
