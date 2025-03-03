@@ -4,7 +4,7 @@ import os
 import json
 
 # 관리자 비밀번호 설정
-PASSWORD = "sejin2025"
+PASSWORD = "sejin2026"
 
 # CSV 파일 경로
 data_file = "students_points.csv"
