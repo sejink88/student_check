@@ -18,8 +18,10 @@ class_students = {
 def load_data():
     """기존 데이터를 유지하면서 새로운 학생만 추가"""
     if os.path.exists(data_file):
+        # 기존 데이터 로드
         data = pd.read_csv(data_file)
     else:
+        # 파일이 없으면 빈 데이터프레임 생성
         data = pd.DataFrame(columns=["반", "학생", "세진코인", "기록"])
 
     existing_students = set(zip(data["반"], data["학생"]))
@@ -33,7 +35,6 @@ def load_data():
     if new_entries:
         new_data = pd.DataFrame(new_entries, columns=["반", "학생", "세진코인", "기록"])
         data = pd.concat([data, new_data], ignore_index=True)
-        save_data(data)  # 변경된 데이터 저장
 
     return data
 
@@ -48,6 +49,12 @@ data = load_data()
 # Streamlit UI 설정
 st.title("세진코인 관리 시스템")
 
+# 파일 존재 여부 확인
+if os.path.exists(data_file):
+    st.write(f"✅ `{data_file}` 파일이 존재합니다.")
+else:
+    st.warning(f"⚠️ `{data_file}` 파일이 존재하지 않습니다. 데이터가 초기화될 수 있음!")
+
 selected_class = st.selectbox("반을 선택하세요:", sorted(data["반"].unique()))
 filtered_data = data[data["반"] == selected_class]
 
@@ -58,7 +65,7 @@ password = st.text_input("비밀번호를 입력하세요:", type="password")
 
 if password == PASSWORD:
     col1, col2 = st.columns(2)
-
+    
     with col1:
         if st.button(f"{selected_student}에게 세진코인 추가"):
             data.at[student_index, "세진코인"] += 1
@@ -79,7 +86,7 @@ if password == PASSWORD:
                 st.error(f"{selected_student}에게 1코인 차감됨.")
             else:
                 st.warning("세진코인이 부족합니다.")
-
+    
     # 업데이트된 정보 표시
     st.subheader(f"{selected_student}의 정보")
     updated_student_data = data.loc[[student_index], ["반", "학생", "세진코인", "기록"]]
