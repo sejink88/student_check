@@ -40,7 +40,7 @@ def load_data():
             for student in students:
                 students_data["반"].append(class_name)
                 students_data["학생"].append(student)
-                students_data["상벌점"].append(0)
+                students_data["세진코인"].append(0)
                 students_data["기록"].append("[]")
 
         data = pd.DataFrame(students_data)
@@ -74,21 +74,21 @@ if password == correct_password:
 
     with col1:
         if st.button(f"{selected_student}에게 세진코인 부여"):
-            data.at[student_index, "상벌점"] += 1
+            data.at[student_index, "세진코인"] += 1
             record_list = eval(data.at[student_index, "기록"])
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            st.success(f"{selected_student}에게 상점이 부여되었습니다.")
+            st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
 
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
-            data.at[student_index, "상벌점"] -= 1
+            data.at[student_index, "세진코인"] -= 1
             record_list = eval(data.at[student_index, "기록"])
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            st.error(f"{selected_student}에게 벌점이 부여되었습니다.")
+            st.error(f"{selected_student}에게 세진코인이 회수되었습니다.")
 
     # 선택한 학생만 업데이트된 데이터 표시
     st.subheader(f"{selected_student}의 업데이트된 세진코인")
