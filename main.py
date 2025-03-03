@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import json
-from dotenv import load_dotenv, set_key
+from dotenv import load_dotenv
 from pathlib import Path
 
 # 환경 변수 로드 (비밀번호 보안 강화)
@@ -48,11 +48,6 @@ def load_data():
 def save_data(data):
     data.to_csv(data_file, index=False)
 
-def update_password(new_password):
-    global PASSWORD
-    PASSWORD = new_password
-    set_key(env_path, "SEJINCOIN_PASSWORD", new_password)
-
 # 데이터 로드
 data = load_data()
 
@@ -95,13 +90,5 @@ if password == PASSWORD:
     st.subheader(f"{selected_student}의 정보")
     updated_student_data = data.loc[[student_index], ["반", "학생", "세진코인", "기록"]]
     st.dataframe(updated_student_data)
-
-    # 비밀번호 변경 기능
-    st.subheader("관리자 비밀번호 변경")
-    new_password = st.text_input("새 비밀번호 입력:", type="password")
-    if st.button("비밀번호 변경"):
-        update_password(new_password)
-        st.success("비밀번호가 변경되었습니다. 다시 로그인하세요.")
-        st.experimental_rerun()
 else:
     st.warning("올바른 비밀번호를 입력하세요.")
