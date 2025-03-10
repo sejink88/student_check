@@ -10,8 +10,10 @@ data_file = "students_points.csv"
 def load_data():
     """CSV 파일을 로드하고, 학생 데이터를 업데이트하는 함수"""
     if os.path.exists(data_file):
+        print("[INFO] CSV 파일 로드 성공!")
         data = pd.read_csv(data_file)
     else:
+        print("[INFO] CSV 파일 없음. 새 파일 생성 예정.")
         data = pd.DataFrame(columns=["반", "학생", "세진코인", "기록"])
 
     class_students = {
@@ -40,7 +42,11 @@ def load_data():
 # CSV 파일 저장 함수
 def save_data(data):
     """현재 데이터를 CSV 파일에 저장하는 함수"""
-    data.to_csv(data_file, index=False)
+    try:
+        data.to_csv(data_file, index=False)
+        print("[INFO] 데이터 저장 완료!")
+    except Exception as e:
+        print(f"[ERROR] 데이터 저장 실패: {e}")
 
 # 세션 상태에서 데이터 로드
 if "data" not in st.session_state:
@@ -68,6 +74,7 @@ if password == correct_password:
 
     with col1:
         if st.button(f"{selected_student}에게 세진코인 부여"):
+            print(f"[INFO] {selected_student}에게 세진코인 부여 중...")
             data.at[student_index, "세진코인"] += 1
             record_list = ast.literal_eval(data.at[student_index, "기록"])
             record_list.append(1)
@@ -76,11 +83,11 @@ if password == correct_password:
             # 데이터 저장 후 세션 상태 업데이트
             save_data(data)
             st.session_state["data"] = data
-
             st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
 
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
+            print(f"[INFO] {selected_student}에게 세진코인 회수 중...")
             data.at[student_index, "세진코인"] -= 1
             record_list = ast.literal_eval(data.at[student_index, "기록"])
             record_list.append(-1)
@@ -89,7 +96,6 @@ if password == correct_password:
             # 데이터 저장 후 세션 상태 업데이트
             save_data(data)
             st.session_state["data"] = data
-
             st.error(f"{selected_student}에게 세진코인이 회수되었습니다.")
 
     # 선택한 학생의 업데이트된 데이터 표시
