@@ -8,12 +8,12 @@ data_file = "students_points.csv"
 
 # CSV 파일 로드 함수
 def load_data():
+    """CSV 파일을 로드하고, 학생 데이터를 업데이트하는 함수"""
     if os.path.exists(data_file):
         data = pd.read_csv(data_file)
     else:
         data = pd.DataFrame(columns=["반", "학생", "세진코인", "기록"])
 
-    # 새로운 학생 명단 반영 (기존 데이터 유지)
     class_students = {
         "1반": ["김성호", "김재영", "김정원", "김준희"],
         "2반": ["강태연", "고연우", "김건우"],
@@ -33,19 +33,23 @@ def load_data():
     if new_entries:
         new_data = pd.DataFrame(new_entries, columns=["반", "학생", "세진코인", "기록"])
         data = pd.concat([data, new_data], ignore_index=True)
-        save_data(data)  # 데이터 저장
+        save_data(data)
 
     return data
 
 # CSV 파일 저장 함수
 def save_data(data):
+    """현재 데이터를 CSV 파일에 저장하는 함수"""
     data.to_csv(data_file, index=False)
 
-# 데이터 로드
-data = load_data()
+# 세션 상태에서 데이터 로드
+if "data" not in st.session_state:
+    st.session_state["data"] = load_data()
+
+data = st.session_state["data"]
 
 # 페이지 제목
-st.title("세진코인")
+st.title("세진코인 관리 시스템")
 
 # 반 선택
 selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
@@ -57,7 +61,7 @@ student_index = data[(data["반"] == selected_class) & (data["학생"] == select
 
 # 세진코인 부여 기능 (비밀번호 확인 추가)
 password = st.text_input("비밀번호를 입력하세요:", type="password")
-correct_password = "tpwls6212"  # 비밀번호 설정
+correct_password = "sejin2025"
 
 if password == correct_password:
     col1, col2 = st.columns(2)
@@ -69,9 +73,11 @@ if password == correct_password:
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
 
-            save_data(data)  
-            data = load_data()  # 변경된 데이터 다시 불러오기
-            st.success(f"{selected_student}에게 상점이 부여되었습니다.")
+            # 데이터 저장 후 세션 상태 업데이트
+            save_data(data)
+            st.session_state["data"] = data
+
+            st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
 
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
@@ -80,11 +86,13 @@ if password == correct_password:
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
 
-            save_data(data)  
-            data = load_data()  # 변경된 데이터 다시 불러오기
-            st.error(f"{selected_student}에게 벌점이 부여되었습니다.")
+            # 데이터 저장 후 세션 상태 업데이트
+            save_data(data)
+            st.session_state["data"] = data
 
-    # 선택한 학생만 업데이트된 데이터 표시
+            st.error(f"{selected_student}에게 세진코인이 회수되었습니다.")
+
+    # 선택한 학생의 업데이트된 데이터 표시
     st.subheader(f"{selected_student}의 업데이트된 세진코인")
     updated_student_data = data.loc[[student_index], ["반", "학생", "세진코인", "기록"]]
     st.dataframe(updated_student_data)
