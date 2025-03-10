@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import ast
 
 # CSV 파일 경로
 data_file = "students_points.csv"
@@ -14,38 +15,26 @@ def load_data():
 
     # 새로운 학생 명단 반영 (기존 데이터 유지)
     class_students = {
-        "1반": ["김성호", "김재영", "김정원", "김준희", "박민우", "박성하", "박주찬", "박준성", "박필규", "박현우", 
-              "반도완", "배준우", "서명교", "윤선빈", "이운찬", "이은규", "장우석", "장재익", "전영현", "전은호", 
-              "전준석", "조선우", "차서혁", "최성찬", "최수안", "최준혁", "허진웅", "황지환"],
-        "2반": ["강태연", "고연우", "김건우", "김지용", "김태윤", "박성준", "박정우", "박진형", "방성준", "송상민", 
-              "오교선", "오수민", "원준영", "윤온유", "윤준원", "이동연", "이민우", "이서후", "이석민", "이승학", 
-              "장주노", "조동은", "지준우", "최재혁", "한유담", "한윤서", "홍정재"],
-        "3반": ["강성철", "강정웅", "권승우", "금민서", "김동현", "김란우", "김민석", "김민성", "김민준", "김성현",
-              "김장환", "김재원", "김태훈", "김하람", "Lim Kirill", "민현홍", "박지우", "손정혁", "오성민", "유태환", 
-              "이연동", "이준호", "임건우", "임용진", "전찬호", "전홍균", "정영도", "허현준"],
-        "4반": ["강범준", "고태윤", "김성훈", "김수환", "김시후", "김태현", "김형준", "박재형", "박중원", "박지우", 
-              "송지환", "신명진", "신정우", "양하랑", "연정우", "오대희", "오은교", "유진호", "윤재석", "이서준", 
-              "이충환", "정지호", "조은찬", "지준서", "최승원", "최찬홍", "최현서"],
-        "5반": ["김도현", "김범찬", "김세훈", "김승도", "김신율", "김종호", "김태건", "김한결", "김현수", "백인성", 
-              "안현준", "엄우성", "엄준원", "이원준", "이제범", "이준우", "이태민", "이태영", "임강현", "임서후", 
-              "장승혁", "정원영", "정현재", "지한규", "최종원", "최지원", "한상묵"]
+        "1반": ["김성호", "김재영", "김정원", "김준희"],
+        "2반": ["강태연", "고연우", "김건우"],
+        "3반": ["강성철", "강정웅", "권승우"],
+        "4반": ["강범준", "고태윤", "김성훈"],
+        "5반": ["김도현", "김범찬", "김세훈"]
     }
 
-    # 기존 데이터에서 학생 목록 가져오기
     existing_students = set(zip(data["반"], data["학생"]))
     new_entries = []
-    
+
     for class_name, students in class_students.items():
         for student in students:
             if (class_name, student) not in existing_students:
                 new_entries.append([class_name, student, 0, "[]"])
-    
-    # 새로운 학생 추가
+
     if new_entries:
         new_data = pd.DataFrame(new_entries, columns=["반", "학생", "세진코인", "기록"])
         data = pd.concat([data, new_data], ignore_index=True)
-        data.to_csv(data_file, index=False)
-    
+        save_data(data)  # 데이터 저장
+
     return data
 
 # CSV 파일 저장 함수
@@ -68,7 +57,7 @@ student_index = data[(data["반"] == selected_class) & (data["학생"] == select
 
 # 세진코인 부여 기능 (비밀번호 확인 추가)
 password = st.text_input("비밀번호를 입력하세요:", type="password")
-correct_password = "sejin2025"  # 비밀번호 설정
+correct_password = "tpwls6212"  # 비밀번호 설정
 
 if password == correct_password:
     col1, col2 = st.columns(2)
@@ -76,19 +65,23 @@ if password == correct_password:
     with col1:
         if st.button(f"{selected_student}에게 세진코인 부여"):
             data.at[student_index, "세진코인"] += 1
-            record_list = eval(data.at[student_index, "기록"])
+            record_list = ast.literal_eval(data.at[student_index, "기록"])
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
-            save_data(data)
+
+            save_data(data)  
+            data = load_data()  # 변경된 데이터 다시 불러오기
             st.success(f"{selected_student}에게 상점이 부여되었습니다.")
 
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "세진코인"] -= 1
-            record_list = eval(data.at[student_index, "기록"])
+            record_list = ast.literal_eval(data.at[student_index, "기록"])
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
-            save_data(data)
+
+            save_data(data)  
+            data = load_data()  # 변경된 데이터 다시 불러오기
             st.error(f"{selected_student}에게 벌점이 부여되었습니다.")
 
     # 선택한 학생만 업데이트된 데이터 표시
