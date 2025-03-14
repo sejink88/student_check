@@ -67,7 +67,7 @@ student_index = data[(data["반"] == selected_class) & (data["학생"] == select
 
 # 세진코인 부여 기능 (비밀번호 확인 추가)
 password = st.text_input("비밀번호를 입력하세요:", type="password")
-correct_password = "sejin2025"
+correct_password = "wjddusdlcjswo"
 
 if password == correct_password:
     col1, col2 = st.columns(2)
