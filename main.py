@@ -12,8 +12,8 @@ st.markdown(
 
     /* .stApp 배경 설정: 코인이 바둑판식으로 배열된 이미지 */
     .stApp {
-        background: url('https://cdn.pixabay.com/photo/2013/07/13/10/46/coins-157845_1280.png') repeat;
-        background-size: 150px 150px;
+        background: url('https://cdn.pixabay.com/photo/2013/07/13/10/46/coins-157845_1280.png') repeat !important;
+        background-size: 150px 150px !important;
     }
     
     /* 기본 텍스트 스타일 */
@@ -149,7 +149,7 @@ if password == ADMIN_PASSWORD:
             st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
             # 부여 효과음과 이미지 출력 (음원은 자동 재생되지 않음)
             st.audio(award_sound, format="audio/mp3")
-            st.image(award_image, use_column_width=True)
+            st.image(award_image, use_container_width=True)
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "세진코인"] -= 1
@@ -160,7 +160,7 @@ if password == ADMIN_PASSWORD:
             st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
             # 회수 효과음과 이미지 출력 (음원은 자동 재생되지 않음)
             st.audio(deduct_sound, format="audio/mp3")
-            st.image(deduct_image, use_column_width=True)
+            st.image(deduct_image, use_container_width=True)
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
@@ -170,6 +170,4 @@ st.subheader(f"{selected_student}의 업데이트된 세진코인")
 st.dataframe(updated_student_data)
 
 # 전체 학생의 세진코인 현황은 체크박스를 클릭할 때만 표시
-if st.checkbox("전체 학생 세진코인 현황 보기"):
-    st.subheader("전체 학생 세진코인 현황")
-    st.dataframe(data)
+if st.checkbox("전체 학생 세진코인 현황 보기"
