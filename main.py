@@ -147,7 +147,7 @@ if password == ADMIN_PASSWORD:
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
+            # st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
             # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
     with col2:
@@ -157,7 +157,7 @@ if password == ADMIN_PASSWORD:
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
+            # st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
             # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
 else:
