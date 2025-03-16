@@ -34,7 +34,7 @@ st.markdown(
     /* 타이틀 스타일: 빨간색, 굵은 글씨 */
     .title {
         text-align: center;
-        color: #ff0000 !important;
+        color: #ffffff !important;
         font-weight: bold;
         margin-bottom: 10px;
     }
