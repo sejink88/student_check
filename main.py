@@ -71,6 +71,7 @@ if password == ADMIN_PASSWORD:
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
-# 업데이트된 데이터 표시
-st.subheader("업데이트된 세진코인")
-st.dataframe(data)
+# 선택한 학생의 업데이트된 데이터만 표시
+updated_student_data = data.loc[[student_index]]
+st.subheader(f"{selected_student}의 업데이트된 세진코인")
+st.dataframe(updated_student_data)
