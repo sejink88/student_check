@@ -129,14 +129,12 @@ student_index = data[(data["반"] == selected_class) & (data["학생"] == select
 # 비밀번호 입력
 password = st.text_input("비밀번호를 입력하세요:", type="password")
 
+# 재미있는 그림 이미지 URL (예시)
+award_image = "https://source.unsplash.com/800x400/?party,celebration"  # 부여 시 재미있는 그림
+deduct_image = "https://source.unsplash.com/800x400/?oops,fun"         # 회수 시 재미있는 그림
+
 # 세진코인 부여 기능
 col1, col2 = st.columns(2)
-
-# 효과음 및 이미지 URL (예시)
-award_sound = "https://www.soundjay.com/button/sounds/button-3.mp3"
-award_image = "https://source.unsplash.com/800x400/?trophy"
-deduct_sound = "https://www.soundjay.com/button/sounds/button-09.mp3"
-deduct_image = "https://source.unsplash.com/800x400/?warning"
 
 if password == ADMIN_PASSWORD:
     with col1:
@@ -147,8 +145,7 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
             st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
-            # 부여 효과음과 이미지 출력 (음원은 자동 재생되지 않음)
-            st.audio(award_sound, format="audio/mp3")
+            # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
@@ -158,8 +155,7 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
             st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
-            # 회수 효과음과 이미지 출력 (음원은 자동 재생되지 않음)
-            st.audio(deduct_sound, format="audio/mp3")
+            # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
