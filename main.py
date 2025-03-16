@@ -79,7 +79,7 @@ st.markdown(
 # --- 헤더: 움직이는 비트코인 GIF 추가 ---
 st.markdown(
     '<div style="text-align:center;">'
-    '<img class="header-img" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExaXQzcjl2eG5wemlwbGJxZXQ2M3ExZ3lnb3d2bGF6dGszeHVneDNzbCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/w4zX4PfkQmZ4xeG7ny/giphy.gif" alt="Bitcoin GIF">'
+    '<img class="header-img" src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif" alt="Bitcoin GIF">'
     '</div>',
     unsafe_allow_html=True
 )
