@@ -115,6 +115,12 @@ def save_data(data):
     except Exception:
         pass  # 오류 메시지 없이 무시
 
+# 안정적인 이미지 URL 사용 예시
+# 부여 시: 축하하는 파티 이미지
+award_image = "https://cdn.pixabay.com/photo/2015/04/23/22/00/party-736408_1280.jpg"
+# 회수 시: 놀란 얼굴 이미지
+deduct_image = "https://cdn.pixabay.com/photo/2016/11/29/04/17/emoticon-1869262_1280.png"
+
 # 데이터 로드
 data = load_data()
 
@@ -128,10 +134,6 @@ student_index = data[(data["반"] == selected_class) & (data["학생"] == select
 
 # 비밀번호 입력
 password = st.text_input("비밀번호를 입력하세요:", type="password")
-
-# 재미있는 그림 이미지 URL (예시)
-award_image = "https://source.unsplash.com/800x400/?party,celebration"  # 부여 시 재미있는 그림
-deduct_image = "https://source.unsplash.com/800x400/?oops,fun"         # 회수 시 재미있는 그림
 
 # 세진코인 부여 기능
 col1, col2 = st.columns(2)
