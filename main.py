@@ -18,7 +18,7 @@ st.markdown(
     
     /* 기본 텍스트 스타일 */
     html, body, [class*="css"] {
-        color: #ff0000;
+        color: #ffffff;
         font-family: 'Orbitron', sans-serif;
     }
     
@@ -34,7 +34,7 @@ st.markdown(
     /* 타이틀 스타일: 빨간색, 굵은 글씨 */
     .title {
         text-align: center;
-        color: #ff0000;
+        color: #ff0000 !important;
         font-weight: bold;
         margin-bottom: 10px;
     }
