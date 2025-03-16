@@ -31,10 +31,10 @@ st.markdown(
         margin-bottom: 20px;
     }
 
-    /* 타이틀 스타일 */
+    /* 타이틀 스타일 (색상을 흰색으로 변경) */
     .title {
         text-align: center;
-        color: #ff4500;
+        color: #ffffff;
         margin-bottom: 10px;
     }
     
