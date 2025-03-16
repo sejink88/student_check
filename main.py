@@ -10,14 +10,18 @@ st.markdown(
     /* Google Fonts: Orbitron (미래지향적 느낌) */
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
-    /* 전체 배경: 코인이 바둑판식으로 배열된 이미지 적용 */
-    html, body, [class*="css"]  {
+    /* .stApp 배경 설정: 코인이 바둑판식으로 배열된 이미지 */
+    .stApp {
         background: url('https://cdn.pixabay.com/photo/2013/07/13/10/46/coins-157845_1280.png') repeat;
-        background-size: 150px 150px;  /* 이미지 크기를 조절 (원하는 크기로 변경 가능) */
+        background-size: 150px 150px;
+    }
+    
+    /* 기본 텍스트 스타일 */
+    html, body, [class*="css"] {
         color: #ffffff;
         font-family: 'Orbitron', sans-serif;
     }
-
+    
     /* 헤더 이미지 스타일 */
     .header-img {
         width: 100%;
@@ -33,7 +37,7 @@ st.markdown(
         color: #ff4500;
         margin-bottom: 10px;
     }
-
+    
     /* 버튼 기본 스타일 */
     .stButton>button {
          color: #fff;
@@ -143,7 +147,7 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
             st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
-            # 부여 효과음과 이미지 출력
+            # 부여 효과음과 이미지 출력 (음원은 자동 재생되지 않음)
             st.audio(award_sound, format="audio/mp3")
             st.image(award_image, use_column_width=True)
     with col2:
@@ -154,7 +158,7 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
             st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
-            # 회수 효과음과 이미지 출력
+            # 회수 효과음과 이미지 출력 (음원은 자동 재생되지 않음)
             st.audio(deduct_sound, format="audio/mp3")
             st.image(deduct_image, use_column_width=True)
 else:
