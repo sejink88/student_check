@@ -7,46 +7,83 @@ import ast
 st.markdown(
     """
     <style>
-    /* 전체 배경색 및 폰트 설정 */
-    body {
-        background-color: #1E1E2F;
-        color: #FFFFFF;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* Google Fonts: Orbitron (미래지향적 느낌) */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+    /* 전체 배경: 주식 매매창 느낌의 강렬한 그라데이션 */
+    html, body, [class*="css"]  {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+        background-size: 400% 400%;
+        animation: gradientBG 15s ease infinite;
+        color: #ffffff;
+        font-family: 'Orbitron', sans-serif;
     }
-    
-    /* 헤더 스타일 */
-    .header {
+
+    @keyframes gradientBG {
+        0% {background-position: 0% 50%;}
+        50% {background-position: 100% 50%;}
+        100% {background-position: 0% 50%;}
+    }
+
+    /* 헤더 이미지 스타일 */
+    .header-img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* 타이틀 스타일 */
+    .title {
         text-align: center;
-        padding: 20px;
+        color: #ff4500;
+        margin-bottom: 10px;
     }
-    
+    .subtitle {
+        text-align: center;
+        color: #ffffff;
+        margin-bottom: 30px;
+    }
+
     /* 버튼 스타일 */
     .stButton>button {
-        background-color: #FF6F61;
-        color: white;
-        font-size: 18px;
-        border-radius: 10px;
-        padding: 10px 20px;
-        border: none;
+         background-color: #ff4500;
+         color: #fff;
+         font-weight: bold;
+         border: none;
+         border-radius: 8px;
+         padding: 10px 20px;
+         font-size: 16px;
+         transition: transform 0.2s ease-in-out;
+         box-shadow: 0px 4px 6px rgba(0,0,0,0.3);
     }
     .stButton>button:hover {
-        background-color: #FF8A75;
+         transform: scale(1.05);
+         background-color: #ff6347;
     }
-    
-    /* 체크박스 스타일 (예시) */
+
+    /* 체크박스 스타일 */
     .stCheckbox label {
-        font-size: 16px;
-        font-weight: bold;
+         font-size: 16px;
+         font-weight: bold;
     }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-# --- 헤더 이미지 및 타이틀 ---
-st.markdown('<div class="header"><img src="https://images.unsplash.com/photo-1593642532973-d31b6557fa68?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60" alt="Cool Banner" width="100%"></div>', unsafe_allow_html=True)
-st.title("세진코인 관리 시스템")
-st.markdown("<h3 style='text-align: center; color: #FF6F61;'>멋진 중학생들을 위한 세진코인 관리 앱</h3>", unsafe_allow_html=True)
+# --- 헤더: 움직이는 비트코인 GIF 추가 ---
+st.markdown(
+    '<div style="text-align:center;">'
+    '<img class="header-img" src="https://media.giphy.com/media/13HgwGsXF0aiGY/giphy.gif" alt="Bitcoin GIF">'
+    '</div>',
+    unsafe_allow_html=True
+)
+
+# --- 타이틀 및 부제목 ---
+st.markdown('<h1 class="title">세진코인 관리 시스템</h1>', unsafe_allow_html=True)
+st.markdown('<h3 class="subtitle">주식 매매창 느낌의 화려한 UI로 관리하는 세진코인</h3>', unsafe_allow_html=True)
 
 # CSV 파일 경로
 data_file = "students_points.csv"
