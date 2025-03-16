@@ -35,7 +35,7 @@ def save_data(data):
 data = load_data()
 
 # 페이지 제목
-st.title("세진코인")
+st.title("세진코인 관리 시스템")
 
 # 반 선택
 selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
@@ -71,7 +71,12 @@ if password == ADMIN_PASSWORD:
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
-# 선택한 학생의 업데이트된 데이터만 표시
+# 기본: 선택한 학생의 업데이트된 데이터만 표시
 updated_student_data = data.loc[[student_index]]
 st.subheader(f"{selected_student}의 업데이트된 세진코인")
 st.dataframe(updated_student_data)
+
+# 전체 학생의 세진코인 현황은 체크박스를 클릭할 때만 표시
+if st.checkbox("전체 학생 세진코인 현황 보기"):
+    st.subheader("전체 학생 세진코인 현황")
+    st.dataframe(data)
