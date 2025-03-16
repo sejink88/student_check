@@ -18,7 +18,7 @@ st.markdown(
     
     /* 기본 텍스트 스타일 */
     html, body, [class*="css"] {
-        color: #ffffff;
+        color: #ff0000;
         font-family: 'Orbitron', sans-serif;
     }
     
