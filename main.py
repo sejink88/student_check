@@ -3,6 +3,51 @@ import pandas as pd
 import os
 import ast
 
+# --- 커스텀 CSS 추가 ---
+st.markdown(
+    """
+    <style>
+    /* 전체 배경색 및 폰트 설정 */
+    body {
+        background-color: #1E1E2F;
+        color: #FFFFFF;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    /* 헤더 스타일 */
+    .header {
+        text-align: center;
+        padding: 20px;
+    }
+    
+    /* 버튼 스타일 */
+    .stButton>button {
+        background-color: #FF6F61;
+        color: white;
+        font-size: 18px;
+        border-radius: 10px;
+        padding: 10px 20px;
+        border: none;
+    }
+    .stButton>button:hover {
+        background-color: #FF8A75;
+    }
+    
+    /* 체크박스 스타일 (예시) */
+    .stCheckbox label {
+        font-size: 16px;
+        font-weight: bold;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+# --- 헤더 이미지 및 타이틀 ---
+st.markdown('<div class="header"><img src="https://images.unsplash.com/photo-1593642532973-d31b6557fa68?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=60" alt="Cool Banner" width="100%"></div>', unsafe_allow_html=True)
+st.title("세진코인 관리 시스템")
+st.markdown("<h3 style='text-align: center; color: #FF6F61;'>멋진 중학생들을 위한 세진코인 관리 앱</h3>", unsafe_allow_html=True)
+
 # CSV 파일 경로
 data_file = "students_points.csv"
 
@@ -33,9 +78,6 @@ def save_data(data):
 
 # 데이터 로드
 data = load_data()
-
-# 페이지 제목
-st.title("세진코인 관리 시스템")
 
 # 반 선택
 selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
