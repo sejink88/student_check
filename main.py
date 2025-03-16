@@ -31,10 +31,11 @@ st.markdown(
         margin-bottom: 20px;
     }
 
-    /* 타이틀 스타일 (색상을 흰색으로 변경) */
+    /* 타이틀 스타일: 빨간색, 굵은 글씨 */
     .title {
         text-align: center;
-        color: #ffffff;
+        color: #ff0000;
+        font-weight: bold;
         margin-bottom: 10px;
     }
     
@@ -117,57 +118,4 @@ def save_data(data):
 
 # 안정적인 이미지 URL 사용 예시
 # 부여 시: 축하하는 파티 이미지
-award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
-# 회수 시: 놀란 얼굴 이미지
-deduct_image = "https://i.ytimg.com/vi/4v8BOVlDI3Q/maxresdefault.jpg"
-
-# 데이터 로드
-data = load_data()
-
-# 반 선택
-selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
-filtered_data = data[data["반"] == selected_class]
-
-# 학생 선택
-selected_student = st.selectbox("학생을 선택하세요:", filtered_data["학생"].tolist())
-student_index = data[(data["반"] == selected_class) & (data["학생"] == selected_student)].index[0]
-
-# 비밀번호 입력
-password = st.text_input("비밀번호를 입력하세요:", type="password")
-
-# 세진코인 부여 기능
-col1, col2 = st.columns(2)
-
-if password == ADMIN_PASSWORD:
-    with col1:
-        if st.button(f"{selected_student}에게 세진코인 부여"):
-            data.at[student_index, "세진코인"] += 1
-            record_list = ast.literal_eval(data.at[student_index, "기록"])
-            record_list.append(1)
-            data.at[student_index, "기록"] = str(record_list)
-            save_data(data)
-            st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
-            # 부여 시 재미있는 그림 출력
-            st.image(award_image, use_container_width=True)
-    with col2:
-        if st.button(f"{selected_student}에게 세진코인 회수"):
-            data.at[student_index, "세진코인"] -= 1
-            record_list = ast.literal_eval(data.at[student_index, "기록"])
-            record_list.append(-1)
-            data.at[student_index, "기록"] = str(record_list)
-            save_data(data)
-            st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
-            # 회수 시 재미있는 그림 출력
-            st.image(deduct_image, use_container_width=True)
-else:
-    st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
-
-# 기본: 선택한 학생의 업데이트된 데이터만 표시
-updated_student_data = data.loc[[student_index]]
-st.subheader(f"{selected_student}의 업데이트된 세진코인")
-st.dataframe(updated_student_data)
-
-# 전체 학생의 세진코인 현황은 체크박스를 클릭할 때만 표시
-if st.checkbox("전체 학생 세진코인 현황 보기"):
-    st.subheader("전체 학생 세진코인 현황")
-    st.dataframe(data)
+award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/20
