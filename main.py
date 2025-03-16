@@ -12,7 +12,7 @@ st.markdown(
 
     /* .stApp 배경 설정: 코인이 바둑판식으로 배열된 이미지 */
     .stApp {
-        background: url('https://static.upbitcare.com/f4040c43-95a7-4373-bc26-9715f20d70be.png') repeat !important;
+        background: url('https://global-assets.benzinga.com/kr/2025/02/16222019/1739712018-Cryptocurrency-Photo-by-SvetlanaParnikov.jpeg') repeat !important;
         background-size: 150px 150px !important;
     }
     
