@@ -94,6 +94,10 @@ data_file = "students_points.csv"
 # 관리자 비밀번호
 ADMIN_PASSWORD = "wjddusdlcjswo"
 
+# 효과음 URL (무료 효과음 예시)
+award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 세진코인 부여 효과음
+deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 세진코인 회수 효과음
+
 # CSV 파일 로드 함수
 def load_data():
     if os.path.exists(data_file):
@@ -147,9 +151,18 @@ if password == ADMIN_PASSWORD:
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            # st.success(f"{selected_student}에게 세진코인이 부여되었습니다.")
+     
             # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
+            # 부여 효과음 재생
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{award_sound_url}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "세진코인"] -= 1
@@ -157,9 +170,18 @@ if password == ADMIN_PASSWORD:
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            # st.error(f"{selected_student}에게 세진코인이 사용되었습니다.")
+         
             # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
+            # 회수 효과음 재생
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{deduct_sound_url}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
