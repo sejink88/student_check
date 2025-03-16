@@ -170,4 +170,6 @@ st.subheader(f"{selected_student}의 업데이트된 세진코인")
 st.dataframe(updated_student_data)
 
 # 전체 학생의 세진코인 현황은 체크박스를 클릭할 때만 표시
-if st.checkbox("전체 학생 세진코인 현황 보기")
+if st.checkbox("전체 학생 세진코인 현황 보기"):
+    st.subheader("전체 학생 세진코인 현황")
+    st.dataframe(data)
