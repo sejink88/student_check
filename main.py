@@ -155,7 +155,7 @@ if password == ADMIN_PASSWORD:
      
             # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
-            # 부여 효과음 재생
+            # 부여 효과음 재생 (단일 클릭 시 재생)
             st.markdown(
                 f"""
                 <audio autoplay>
@@ -174,7 +174,7 @@ if password == ADMIN_PASSWORD:
          
             # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
-            # 회수 효과음 재생
+            # 회수 효과음 재생 (단일 클릭 시 재생)
             st.markdown(
                 f"""
                 <audio autoplay>
