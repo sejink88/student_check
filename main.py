@@ -158,7 +158,7 @@ if password == ADMIN_PASSWORD:
 st.markdown(
     f"""
     <audio autoplay>
-      <source src="{award_sound_url}?t={time.time()}" type="audio/mp3">
+      <source src="{award_sound_url}?t={time.time()}" type="audio/wav">
     </audio>
     """,
     unsafe_allow_html=True,
@@ -178,7 +178,7 @@ st.markdown(
            st.markdown(
     f"""
     <audio autoplay>
-      <source src="{deduct_sound_url}?t={time.time()}" type="audio/mp3">
+      <source src="{deduct_sound_url}?t={time.time()}" type="audio/wav">
     </audio>
     """,
     unsafe_allow_html=True,
