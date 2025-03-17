@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import ast
 import time
+import random
 
 # --- 커스텀 CSS 추가 ---
 st.markdown(
@@ -96,8 +97,27 @@ data_file = "students_points.csv"
 ADMIN_PASSWORD = "wjddusdlcjswo"
 
 # 효과음 URL (무료 효과음 예시)
-award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 세진코인 부여 효과음
-deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 세진코인 회수 효과음
+award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 부여 효과음
+deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 회수 효과음
+
+# 효과음을 재생하는 함수
+def play_audio(url, audio_type="audio/wav"):
+    unique_id = f"audio-{time.time()}-{random.randint(0,100000)}"
+    st.markdown(
+        f"""
+        <audio id="{unique_id}" autoplay>
+          <source src="{url}?t={time.time()}" type="{audio_type}">
+        </audio>
+        <script>
+            var audioElem = document.getElementById("{unique_id}");
+            if(audioElem) {{
+                audioElem.load();
+                audioElem.play();
+            }}
+        </script>
+        """,
+        unsafe_allow_html=True,
+    )
 
 # CSV 파일 로드 함수
 def load_data():
@@ -152,34 +172,12 @@ if password == ADMIN_PASSWORD:
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-     
+            
             # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
-            # 효과음 재생 함수: 고유 id와 자바스크립트를 사용하여 매번 새로 재생
-def play_audio(url, audio_type="audio/wav"):
-    unique_id = f"audio-{time.time()}-{random.randint(0,100000)}"
-    st.markdown(
-        f"""
-        <audio id="{unique_id}" autoplay>
-          <source src="{url}?t={time.time()}" type="{audio_type}">
-        </audio>
-        <script>
-            // 강제로 audio 태그를 다시 로드하여 재생
-            var audioElem = document.getElementById("{unique_id}");
-            if(audioElem) {{
-                audioElem.load();
-                audioElem.play();
-            }}
-        </script>
-        """,
-        unsafe_allow_html=True,
-    )
-
-# 예시로 부여와 회수 버튼 클릭 시 효과음을 재생하는 부분을 수정
-# 부여 효과음 재생
-st.markdown("")
-if st.button("세진코인 부여 (효과음 테스트)"):
-    play_audio("https://www.soundjay.com/buttons/button-1.wav")
+            # 부여 효과음 재생
+            play_audio(award_sound_url)
+            
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "세진코인"] -= 1
@@ -187,12 +185,11 @@ if st.button("세진코인 부여 (효과음 테스트)"):
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-         
+            
             # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
             # 회수 효과음 재생
-if st.button("세진코인 회수 (효과음 테스트)"):
-    play_audio("https://www.soundjay.com/buttons/button-2.wav")
+            play_audio(deduct_sound_url)
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
