@@ -96,13 +96,8 @@ data_file = "students_points.csv"
 ADMIN_PASSWORD = "wjddusdlcjswo"
 
 # 효과음 URL (무료 효과음 예시)
-award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 부여 효과음
-deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 회수 효과음
-
-# st.empty()를 사용해서 매번 새로운 오디오 위젯 생성하는 함수
-def play_audio(url, audio_type="audio/wav"):
-    placeholder = st.empty()  # 새로운 컨테이너 생성
-    placeholder.audio(url + f"?t={time.time()}", format=audio_type, key=str(time.time()))
+award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 세진코인 부여 효과음
+deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 세진코인 회수 효과음
 
 # CSV 파일 로드 함수
 def load_data():
@@ -126,8 +121,10 @@ def save_data(data):
     except Exception:
         pass  # 오류 메시지 없이 무시
 
-# 이미지 URL
+# 안정적인 이미지 URL 사용 예시
+# 부여 시: 축하하는 파티 이미지
 award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
+# 회수 시: 놀란 얼굴 이미지
 deduct_image = "https://i.ytimg.com/vi/4v8BOVlDI3Q/maxresdefault.jpg"
 
 # 데이터 로드
@@ -156,8 +153,17 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
      
+            # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
-            play_audio(award_sound_url)
+            # 부여 효과음 재생
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{award_sound_url}?t={time.time()}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "세진코인"] -= 1
@@ -166,17 +172,26 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
          
+            # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
-            play_audio(deduct_sound_url)
+            # 회수 효과음 재생
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{deduct_sound_url}?t={time.time()}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
-# 선택한 학생의 업데이트된 데이터 표시
+# 기본: 선택한 학생의 업데이트된 데이터만 표시
 updated_student_data = data.loc[[student_index]]
 st.subheader(f"{selected_student}의 업데이트된 세진코인")
 st.dataframe(updated_student_data)
 
-# 전체 학생 데이터 보기
+# 전체 학생의 세진코인 현황은 체크박스를 클릭할 때만 표시
 if st.checkbox("전체 학생 세진코인 현황 보기"):
     st.subheader("전체 학생 세진코인 현황")
     st.dataframe(data)
