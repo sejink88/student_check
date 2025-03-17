@@ -92,12 +92,12 @@ st.markdown('<h1 class="title">세진코인 관리 시스템</h1>', unsafe_allow
 # CSV 파일 경로
 data_file = "students_points.csv"
 
-# 관리자 비밀번호
-ADMIN_PASSWORD = "wjddusdlcjswo"
+# 관리자 비밀번호: st.secrets를 사용하여 보안을 강화 (로컬 실행 시 .streamlit/secrets.toml 파일 필요)
+ADMIN_PASSWORD = st.secrets["admin"]["password"]
 
 # 효과음 URL (무료 효과음 예시)
-award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 세진코인 부여 효과음
-deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 세진코인 회수 효과음
+award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 부여 효과음
+deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 회수 효과음
 
 # CSV 파일 로드 함수
 def load_data():
@@ -113,18 +113,16 @@ def load_data():
         data.to_csv(data_file, index=False)
         return data
 
-# CSV 파일 저장 함수 (로컬에만 저장)
+# CSV 파일 저장 함수
 def save_data(data):
     try:
         data.to_csv(data_file, index=False)
         print("[INFO] 로컬에 CSV 저장 완료!")
     except Exception:
-        pass  # 오류 메시지 없이 무시
+        pass
 
-# 안정적인 이미지 URL 사용 예시
-# 부여 시: 축하하는 파티 이미지
+# 이미지 URL
 award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
-# 회수 시: 놀란 얼굴 이미지
 deduct_image = "https://i.ytimg.com/vi/4v8BOVlDI3Q/maxresdefault.jpg"
 
 # 데이터 로드
@@ -153,9 +151,7 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
      
-            # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
-            # 부여 효과음 재생 (단일 클릭 시 재생)
             st.markdown(
                 f"""
                 <audio autoplay>
@@ -172,9 +168,7 @@ if password == ADMIN_PASSWORD:
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
          
-            # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
-            # 회수 효과음 재생 (단일 클릭 시 재생)
             st.markdown(
                 f"""
                 <audio autoplay>
@@ -186,12 +180,12 @@ if password == ADMIN_PASSWORD:
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
-# 기본: 선택한 학생의 업데이트된 데이터만 표시
+# 선택한 학생의 업데이트된 데이터 표시
 updated_student_data = data.loc[[student_index]]
 st.subheader(f"{selected_student}의 업데이트된 세진코인")
 st.dataframe(updated_student_data)
 
-# 전체 학생의 세진코인 현황은 체크박스를 클릭할 때만 표시
+# 전체 학생 세진코인 현황 보기
 if st.checkbox("전체 학생 세진코인 현황 보기"):
     st.subheader("전체 학생 세진코인 현황")
     st.dataframe(data)
