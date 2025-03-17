@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import os
 import ast
+import time
 
 # --- 커스텀 CSS 추가 ---
 st.markdown(
@@ -155,15 +156,14 @@ if password == ADMIN_PASSWORD:
             # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
             # 부여 효과음 재생
-    st.markdown(
-    f"""
-    <audio autoplay>
-      <source src="{award_sound_url}?t={time.time()}" type="audio/wav">
-    </audio>
-    """,
-    unsafe_allow_html=True,
-)
-
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{award_sound_url}?t={time.time()}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "세진코인"] -= 1
@@ -175,14 +175,14 @@ if password == ADMIN_PASSWORD:
             # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
             # 회수 효과음 재생
-           st.markdown(
-    f"""
-    <audio autoplay>
-      <source src="{deduct_sound_url}?t={time.time()}" type="audio/wav">
-    </audio>
-    """,
-    unsafe_allow_html=True,
-)
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{deduct_sound_url}?t={time.time()}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
