@@ -155,7 +155,7 @@ if password == ADMIN_PASSWORD:
             # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
             # 부여 효과음 재생
-st.markdown(
+    st.markdown(
     f"""
     <audio autoplay>
       <source src="{award_sound_url}?t={time.time()}" type="audio/wav">
