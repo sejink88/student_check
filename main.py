@@ -100,27 +100,10 @@ ADMIN_PASSWORD = "wjddusdlcjswo"
 award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 부여 효과음
 deduct_sound_url = "https://www.soundjay.com/buttons/button-2.wav"  # 회수 효과음
 
-# 효과음을 재생하는 함수
-def play_audio(url, audio_type="audio/wav"):
-    unique_id = f"audio-{time.time()}-{random.randint(0,100000)}"
-    st.markdown(
-        f"""
-        <audio id="{unique_id}" autoplay>
-          <source src="{url}?t={time.time()}" type="{audio_type}">
-        </audio>
-        <script>
-            var audioElem = document.getElementById("{unique_id}");
-            if(audioElem) {{
-                audioElem.load();
-                audioElem.play();
-                audioElem.addEventListener('ended', function() {{
-                    audioElem.remove();
-                }});
-            }}
-        </script>
-        """,
-        unsafe_allow_html=True,
-    )
+# 효과음을 재생하는 함수: st.audio를 고유한 key와 함께 사용
+def play_audio_st(url, audio_type="audio/wav"):
+    # st.audio는 key가 고유하면 매번 새로운 위젯으로 간주
+    st.audio(url + f"?t={time.time()}", format=audio_type, key=str(time.time()))
 
 # CSV 파일 로드 함수
 def load_data():
@@ -175,12 +158,11 @@ if password == ADMIN_PASSWORD:
             record_list.append(1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            
+     
             # 부여 시 재미있는 그림 출력
             st.image(award_image, use_container_width=True)
             # 부여 효과음 재생
-            play_audio(award_sound_url)
-            
+            play_audio_st(award_sound_url)
     with col2:
         if st.button(f"{selected_student}에게 세진코인 회수"):
             data.at[student_index, "세진코인"] -= 1
@@ -188,11 +170,11 @@ if password == ADMIN_PASSWORD:
             record_list.append(-1)
             data.at[student_index, "기록"] = str(record_list)
             save_data(data)
-            
+         
             # 회수 시 재미있는 그림 출력
             st.image(deduct_image, use_container_width=True)
             # 회수 효과음 재생
-            play_audio(deduct_sound_url)
+            play_audio_st(deduct_sound_url)
 else:
     st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
 
