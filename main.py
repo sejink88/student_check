@@ -113,6 +113,9 @@ def play_audio(url, audio_type="audio/wav"):
             if(audioElem) {{
                 audioElem.load();
                 audioElem.play();
+                audioElem.addEventListener('ended', function() {{
+                    audioElem.remove();
+                }});
             }}
         </script>
         """,
