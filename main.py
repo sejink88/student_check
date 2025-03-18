@@ -133,4 +133,69 @@ def save_data(data):
 
 # 이미지 URL
 award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
-deduct_image = "http
+deduct_image = "https://i.ytimg.com/vi/4v8BOVlDI3Q/maxresdefault.jpg"
+
+# 데이터 로드
+data = load_data()
+
+# 반 선택
+selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
+filtered_data = data[data["반"] == selected_class]
+
+# 학생 선택
+selected_student = st.selectbox("학생을 선택하세요:", filtered_data["학생"].tolist())
+student_index = data[(data["반"] == selected_class) & (data["학생"] == selected_student)].index[0]
+
+# 관리자 비밀번호 입력 (평문 입력 후 해시 비교)
+password = st.text_input("관리자 비밀번호를 입력하세요:", type="password")
+
+# 관리자 암호 확인 후 기능 사용
+if password and check_admin_password(password):
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        if st.button(f"{selected_student}에게 세진코인 부여"):
+            data.at[student_index, "세진코인"] += 1
+            record_list = ast.literal_eval(data.at[student_index, "기록"])
+            record_list.append(1)
+            data.at[student_index, "기록"] = str(record_list)
+            save_data(data)
+     
+            st.image(award_image, use_container_width=True)
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{award_sound_url}?t={time.time()}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
+    with col2:
+        if st.button(f"{selected_student}에게 세진코인 회수"):
+            data.at[student_index, "세진코인"] -= 1
+            record_list = ast.literal_eval(data.at[student_index, "기록"])
+            record_list.append(-1)
+            data.at[student_index, "기록"] = str(record_list)
+            save_data(data)
+         
+            st.image(deduct_image, use_container_width=True)
+            st.markdown(
+                f"""
+                <audio autoplay>
+                  <source src="{deduct_sound_url}?t={time.time()}" type="audio/wav">
+                </audio>
+                """,
+                unsafe_allow_html=True,
+            )
+else:
+    st.warning("올바른 관리자 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
+
+# 선택한 학생의 업데이트된 데이터 표시
+updated_student_data = data.loc[[student_index]]
+st.subheader(f"{selected_student}의 업데이트된 세진코인")
+st.dataframe(updated_student_data)
+
+# 전체 학생 세진코인 현황 보기
+if st.checkbox("전체 학생 세진코인 현황 보기"):
+    st.subheader("전체 학생 세진코인 현황")
+    st.dataframe(data)
