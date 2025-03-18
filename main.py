@@ -4,7 +4,7 @@ import os
 import ast
 import time
 
-# --- 커스텀 CSS 추가 ---
+# --- 커스텀 CSS 추가 --- 
 st.markdown(
     """
     <style>
