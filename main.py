@@ -3,8 +3,9 @@ import pandas as pd
 import os
 import ast
 import time
+import bcrypt
 
-# --- 커스텀 CSS 추가 --- 
+# --- 커스텀 CSS 추가 ---
 st.markdown(
     """
     <style>
@@ -92,8 +93,17 @@ st.markdown('<h1 class="title">세진코인 관리 시스템</h1>', unsafe_allow
 # CSV 파일 경로
 data_file = "students_points.csv"
 
-# 관리자 비밀번호: st.secrets를 사용하여 보안을 강화 (로컬 실행 시 .streamlit/secrets.toml 파일 필요)
-ADMIN_PASSWORD = st.secrets["admin"]["password"]
+# 관리자 암호 해시를 환경 변수에서 읽어옵니다.
+ADMIN_PASSWORD_HASH = os.environ.get("ADMIN_PASSWORD_HASH")
+if not ADMIN_PASSWORD_HASH:
+    st.error("관리자 암호 해시가 환경 변수에 설정되어 있지 않습니다.")
+
+def check_admin_password(input_password):
+    """입력한 암호의 bcrypt 해시가 저장된 해시와 일치하는지 확인"""
+    if not ADMIN_PASSWORD_HASH:
+        return False
+    return bcrypt.checkpw(input_password.encode('utf-8'),
+                          ADMIN_PASSWORD_HASH.encode('utf-8'))
 
 # 효과음 URL (무료 효과음 예시)
 award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 부여 효과음
@@ -117,9 +127,9 @@ def load_data():
 def save_data(data):
     try:
         data.to_csv(data_file, index=False)
-        print("[INFO] 로컬에 CSV 저장 완료!")
-    except Exception:
-        pass
+        print("[INFO] CSV 저장 완료!")
+    except Exception as e:
+        st.error(f"CSV 저장 오류: {e}")
 
 # 이미지 URL
 award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
@@ -136,56 +146,13 @@ filtered_data = data[data["반"] == selected_class]
 selected_student = st.selectbox("학생을 선택하세요:", filtered_data["학생"].tolist())
 student_index = data[(data["반"] == selected_class) & (data["학생"] == selected_student)].index[0]
 
-# 비밀번호 입력
-password = st.text_input("비밀번호를 입력하세요:", type="password")
+# 관리자 비밀번호 입력 (평문 입력 후 해시 비교)
+password = st.text_input("관리자 비밀번호를 입력하세요:", type="password")
 
-# 세진코인 부여 기능
-col1, col2 = st.columns(2)
-
-if password == ADMIN_PASSWORD:
+# 관리자 암호 확인 후 기능 사용
+if password and check_admin_password(password):
+    col1, col2 = st.columns(2)
+    
     with col1:
         if st.button(f"{selected_student}에게 세진코인 부여"):
-            data.at[student_index, "세진코인"] += 1
-            record_list = ast.literal_eval(data.at[student_index, "기록"])
-            record_list.append(1)
-            data.at[student_index, "기록"] = str(record_list)
-            save_data(data)
-     
-            st.image(award_image, use_container_width=True)
-            st.markdown(
-                f"""
-                <audio autoplay>
-                  <source src="{award_sound_url}?t={time.time()}" type="audio/wav">
-                </audio>
-                """,
-                unsafe_allow_html=True,
-            )
-    with col2:
-        if st.button(f"{selected_student}에게 세진코인 회수"):
-            data.at[student_index, "세진코인"] -= 1
-            record_list = ast.literal_eval(data.at[student_index, "기록"])
-            record_list.append(-1)
-            data.at[student_index, "기록"] = str(record_list)
-            save_data(data)
-         
-            st.image(deduct_image, use_container_width=True)
-            st.markdown(
-                f"""
-                <audio autoplay>
-                  <source src="{deduct_sound_url}?t={time.time()}" type="audio/wav">
-                </audio>
-                """,
-                unsafe_allow_html=True,
-            )
-else:
-    st.warning("올바른 비밀번호를 입력해야 세진코인을 부여할 수 있습니다.")
-
-# 선택한 학생의 업데이트된 데이터 표시
-updated_student_data = data.loc[[student_index]]
-st.subheader(f"{selected_student}의 업데이트된 세진코인")
-st.dataframe(updated_student_data)
-
-# 전체 학생 세진코인 현황 보기
-if st.checkbox("전체 학생 세진코인 현황 보기"):
-    st.subheader("전체 학생 세진코인 현황")
-    st.dataframe(data)
+            data.at[student_inde
