@@ -3,7 +3,6 @@ import pandas as pd
 import os
 import ast
 import time
-import bcrypt
 
 # --- 커스텀 CSS 추가 ---
 st.markdown(
@@ -93,17 +92,8 @@ st.markdown('<h1 class="title">세진코인 관리 시스템</h1>', unsafe_allow
 # CSV 파일 경로
 data_file = "students_points.csv"
 
-# 관리자 암호 해시를 환경 변수에서 읽어옵니다.
-ADMIN_PASSWORD_HASH = os.environ.get("ADMIN_PASSWORD_HASH")
-if not ADMIN_PASSWORD_HASH:
-    st.error("관리자 암호 해시가 환경 변수에 설정되어 있지 않습니다.")
-
-def check_admin_password(input_password):
-    """입력한 암호의 bcrypt 해시가 저장된 해시와 일치하는지 확인"""
-    if not ADMIN_PASSWORD_HASH:
-        return False
-    return bcrypt.checkpw(input_password.encode('utf-8'),
-                          ADMIN_PASSWORD_HASH.encode('utf-8'))
+# 관리자 비밀번호 (평문으로 설정)
+ADMIN_PASSWORD = "wjddusdlcjswo"
 
 # 효과음 URL (무료 효과음 예시)
 award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 부여 효과음
@@ -146,11 +136,11 @@ filtered_data = data[data["반"] == selected_class]
 selected_student = st.selectbox("학생을 선택하세요:", filtered_data["학생"].tolist())
 student_index = data[(data["반"] == selected_class) & (data["학생"] == selected_student)].index[0]
 
-# 관리자 비밀번호 입력 (평문 입력 후 해시 비교)
+# 관리자 비밀번호 입력
 password = st.text_input("관리자 비밀번호를 입력하세요:", type="password")
 
 # 관리자 암호 확인 후 기능 사용
-if password and check_admin_password(password):
+if password == ADMIN_PASSWORD:
     col1, col2 = st.columns(2)
     
     with col1:
