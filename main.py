@@ -133,26 +133,4 @@ def save_data(data):
 
 # 이미지 URL
 award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
-deduct_image = "https://i.ytimg.com/vi/4v8BOVlDI3Q/maxresdefault.jpg"
-
-# 데이터 로드
-data = load_data()
-
-# 반 선택
-selected_class = st.selectbox("반을 선택하세요:", data["반"].unique())
-filtered_data = data[data["반"] == selected_class]
-
-# 학생 선택
-selected_student = st.selectbox("학생을 선택하세요:", filtered_data["학생"].tolist())
-student_index = data[(data["반"] == selected_class) & (data["학생"] == selected_student)].index[0]
-
-# 관리자 비밀번호 입력 (평문 입력 후 해시 비교)
-password = st.text_input("관리자 비밀번호를 입력하세요:", type="password")
-
-# 관리자 암호 확인 후 기능 사용
-if password and check_admin_password(password):
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        if st.button(f"{selected_student}에게 세진코인 부여"):
-            data.at[student_inde
+deduct_image = "http
