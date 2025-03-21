@@ -122,7 +122,7 @@ def save_data(data):
         st.error(f"CSV 저장 오류: {e}")
 
 # 이미지 URL
-award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
+award_image = "dlskadnr.png"
 deduct_image = "test.png"
 
 # 데이터 로드
