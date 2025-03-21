@@ -123,7 +123,7 @@ def save_data(data):
 
 # 이미지 URL
 award_image = "https://cdnweb01.wikitree.co.kr/webdata/editor/202503/16/img_20250316172939_c39ea037.webp"
-deduct_image = "https://i.ytimg.com/vi/4v8BOVlDI3Q/maxresdefault.jpg"
+deduct_image = "test.png"
 
 # 데이터 로드
 data = load_data()
