@@ -93,7 +93,7 @@ st.markdown('<h1 class="title">세진코인 관리 시스템</h1>', unsafe_allow
 data_file = "students_points.csv"
 
 # 관리자 비밀번호 (평문으로 설정)
-ADMIN_PASSWORD = "wjddusdlcjswo"
+ADMIN_PASSWORD = "rlagorhkdWkd"
 
 # 효과음 URL (무료 효과음 예시)
 award_sound_url = "https://www.soundjay.com/buttons/button-1.wav"   # 부여 효과음
